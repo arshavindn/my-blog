@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from .models import Question
+from .models import Question, Choice
 
 
 class QuestionMethodTest(TestCase):
@@ -32,15 +32,21 @@ class QuestionMethodTest(TestCase):
         self.assertEqual(recent_question.was_published_recently(), True)
 
 
-def create_question(question_text, days):
+def create_question(question_text, days=0, create_choice=True):
     """
     Creates a question with the given `question_text` and published the
     given number of `days` offset to now (negative for questions published
     in the past, positive for questions that have yet to be published).
     """
     time = timezone.now() + datetime.timedelta(days=days)
-    return Question.objects.create(question_text=question_text,
-                                   pub_date=time)
+    question = Question.objects.create(question_text=question_text,
+                                       pub_date=time)
+    if create_choice:
+        question.choice_set.add(Choice.objects.create(
+                                    choice_text="Choice 1", question=question),
+                                Choice.objects.create(
+                                    choice_text="Choice 2", question=question))
+    return question
 
 
 class QuestionViewTests(TestCase):
@@ -99,6 +105,22 @@ class QuestionViewTests(TestCase):
         self.assertQuerysetEqual(
             response.context['lastest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
+        )
+
+    def test_index_view_with_question_has_no_choice(self):
+        create_question(question_text="Question has no choice.",
+                        create_choice=False)
+        response = self.client.get(reverse('polls:index'))
+        self.assertContains(response, "No polls are available",
+                            status_code=200)
+        self.assertQuerysetEqual(response.context['lastest_question_list'], [])
+
+    def test_index_view_with_question_has_choices(self):
+        create_question(question_text="Had choices question.")
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['lastest_question_list'],
+            ['<Question: Had choices question.>']
         )
 
 

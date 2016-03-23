@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
+from django.db.models import Count
 
 from .models import Choice, Question
 
@@ -13,9 +14,10 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+        return Question.objects.annotate(
+            num_choices=Count('choice')).filter(
+            num_choices__gt=1).filter(
+            pub_date__lte=timezone.now()).order_by('-pub_date')
 
 
 class DetailView(generic.DetailView):
@@ -26,7 +28,9 @@ class DetailView(generic.DetailView):
         """
         Excludes any questions that aren't published yet.
         """
-        return Question.objects.filter(pub_date__lte=timezone.now())
+        return Question.objects.annotate(
+            num_choices=Count('choice')).filter(
+            num_choices__gt=1).filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
