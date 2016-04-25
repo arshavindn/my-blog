@@ -42,10 +42,11 @@ def create_question(question_text, days=0, create_choice=True):
     question = Question.objects.create(question_text=question_text,
                                        pub_date=time)
     if create_choice:
-        question.choice_set.add(Choice.objects.create(
-                                    choice_text="Choice 1", question=question),
-                                Choice.objects.create(
-                                    choice_text="Choice 2", question=question))
+        question.choice_set.add(
+            Choice.objects.create(
+                choice_text="Choice 1", question=question),
+            Choice.objects.create(
+                choice_text="Choice 2", question=question))
     return question
 
 
