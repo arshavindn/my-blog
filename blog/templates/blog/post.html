@@ -1,0 +1,18 @@
+{% for post in posts %}
+<div class="post">
+    <p class="date">published: {{ post.published_date }}</p>
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+    <div>
+        {% with post_len=post.text|length trun_words=30 %}
+        {% autoescape off %}
+            {% if post.text|truncatewords_html:trun_words|length >= post.text|truncatewords_html:post_len|length %}
+                {{ post.text }}
+            {% else %}
+                {{ post.text|truncatewords_html:trun_words }}
+                <a href="{% url 'post_detail' pk=post.pk %}">read more...</a>
+            {% endif %}
+        {% endautoescape %}
+        {% endwith %}
+    </div>
+</div>
+{% endfor %}

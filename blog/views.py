@@ -1,13 +1,39 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template import loader
 from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 
 
 def post_list(request):
-    posts = Post.objects.filter(
-        published_date__lte=timezone.now()).order_by('-published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    if 'page' not in request.session:
+        request.session['page'] = page = 0
+    else:
+        page = request.session['page']
+    post_per_page = 3
+    print(page)
+    if request.GET.get("ajax_call") == '1':
+        posts = Post.objects.filter(
+            published_date__lte=timezone.now()).order_by('-published_date')[page*post_per_page:page*post_per_page+post_per_page]
+        if posts:
+            print(posts)
+            request.session['page'] += 1
+            template = loader.get_template('blog/post.html')
+            context = {
+                'posts': posts,
+            }
+            return HttpResponse(template.render(context, request),
+                                content_type='html')
+        else:
+            return HttpResponse(status=404)
+    else:
+        if page != 0:
+            request.session['page'] = 1
+
+        posts = Post.objects.filter(
+            published_date__lte=timezone.now()).order_by('-published_date')[:post_per_page]
+        return render(request, 'blog/post_list.html', {'posts': posts})
 
 
 def post_detail(request, pk):

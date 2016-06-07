@@ -1,11 +1,12 @@
-{%extends 'blog/base.html'%}
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+
+{% block header %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{% static 'js/post-list.js' %}"></script>
+{% endblock header %}
 
 {%block content%}
-  {% for post in posts %}
-    <div class="post">
-        <p class="date">published: {{ post.published_date }}</p>
-        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        {% autoescape off %}<div>{{ post.text }}</div> {% endautoescape %}
-      </div>
-  {% endfor %}
+  {% include "blog/post.html" %} 
 {%endblock%}
