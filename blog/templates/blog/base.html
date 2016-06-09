@@ -1,31 +1,49 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Mozart's Blog</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-    {% block header %}
-    {% endblock %}
-  </head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic|Roboto+Condensed:400,400italic,700,700italic&subset=vietnamese' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+    {% block header %} {% endblock %}
+</head>
 
-  <body>
-    <div class="page-header">
-      {% if user.is_authenticated %}
-        <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-      {% endif %}
-      <h1><a href="/">Mozart's blog</a></h1>
-    </div>
+<body>
+    <header class="banner" role="banner">
+        <div class="container">
+            <div class="top-menu headers">
+                <div class="top-menu-btn"><a href="#">About Me</a></div>
+
+                {% if user.is_authenticated %}
+                <div class="top-menu-btn">
+                    <a href="{% url 'post_new' %}"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
+                {% endif %}
+            </div>
+
+            <h1 class="side-brand headers">
+              <a id="blogs-name" href="/">Mozart's blog</a>
+          </h1>
+          <div class="search-box">
+              <div class="form-group has-feedback">
+                  <input type="text" class="form-control" placeholder="Search..." />
+                  <i class="glyphicon glyphicon-search form-control-feedback"></i>
+              </div>
+          </div>
+        </div>
+
+    </header>
 
     <div class="content container">
-      <div class="row">
         <div class="md-col-6">
-          {% block content %}
-          {% endblock %}
+            {% block content %} {% endblock %}
         </div>
-      </div>
     </div>
-  </body>
+</body>
 <html>

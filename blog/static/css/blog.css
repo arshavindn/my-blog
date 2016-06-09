@@ -1,29 +1,87 @@
-h1 a {
+#blogs-name {
     color: #6B6B6D;
     font-family: 'Montserrat';
+    font-size: 60px;
 }
 
 body {
     padding-left: 25px;
 }
 
-.page-header {
+.banner {
     margin-top: 0;
     padding: 20px 20px 20px 40px;
+    display: table;
+    border-bottom: 2px solid #9a9a9a;
+    width: 100%;
+    /*border: 1px solid green;*/
 }
 
-.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+.banner h1 {
+    margin: 0;
+}
+
+.banner .container {
+    height: 80px;
+    /*display: inline-table;*/
+}
+
+.headers {
+    height: 100%;
+    display: table;
+}
+
+.headers a {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.side-brand {
+    float: left;
+}
+
+.banner h1, .banner h1 a, .banner h1 a:visited, .banner h1 a:active {
     font-size: 36pt;
     text-decoration: none;
 }
 
-.page-header .glyphicon {
+.banner .glyphicon {
     color: #6B6B6D;
-    margin-top: 20px;
+}
+
+.top-menu {
+    float: right;
+}
+
+.top-menu-btn {
+    float: right;
+    display: table;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.top-menu a, .top-menu a:hover, .top-menu a:visited {
+    /*margin-right: 20px;*/
+}
+
+.search-box {
+    /*width: 150px;*/
+    display: inline-flex;
+    float: right;
+    clear: both;
+}
+
+.search-box .form-group {
+    margin: 0;
+}
+
+.search-box input {
+    width: 150px;
 }
 
 .content {
-    margin-left: 40px;
+    margin-top: 50px;
 }
 
 h1, h2, h3, h4 {
@@ -41,13 +99,6 @@ h1, h2, h3, h4 {
 
 .post-form textarea, .post-form input {
     width: 100%;
-}
-
-.top-menu, .top-menu:hover, .top-menu:visited {
-    color: #ffffff;
-    float: right;
-    font-size: 26pt;
-    margin-right: 20px;
 }
 
 .post {

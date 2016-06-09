@@ -28,8 +28,8 @@ def post_list(request):
         else:
             return HttpResponse(status=404)
     else:
-        if page != 0:
-            request.session['page'] = 1
+
+        request.session['page'] = 1
 
         posts = Post.objects.filter(
             published_date__lte=timezone.now()).order_by('-published_date')[:post_per_page]
